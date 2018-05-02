@@ -3,10 +3,10 @@
 ## This library contains the code to perform segmentation with the following networks:
 
 **FCN-8** <br />
-*FCN-16* <br />
-FCN-32 <br />
-U-Net <br />
-SegNet <br />
+**FCN-16** <br />
+**FCN-32** <br />
+**U-Net** <br />
+**SegNet** <br />
 
 The data should be stored as follows: <br />
 
