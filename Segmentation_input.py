@@ -195,30 +195,29 @@ def distort_color(image, color_ordering=0, scope=None):
   with tf.name_scope(scope, 'distort_color', [image]):
     if color_ordering == 0:
       image = tf.image.random_brightness(image, max_delta=0.1)
-      image = tf.image.random_saturation(image, lower=1.0, upper=1.3)
-      image = tf.image.random_hue(image, max_delta=0.1)
-      image = tf.image.random_contrast(image, lower=1, upper=1.5)
+      image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
+      image = tf.image.random_hue(image, max_delta=0.04)
+      #image = tf.image.random_contrast(image, lower=0.9, upper=0.99)
     elif color_ordering == 1:
-      image = tf.image.random_saturation(image, lower=1.0, upper=1.3)
+      image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
       image = tf.image.random_brightness(image, max_delta=0.1)
-      image = tf.image.random_contrast(image, lower=1, upper=1.5)
-      image = tf.image.random_hue(image, max_delta=0.1)
+      #image = tf.image.random_contrast(image, lower=0.9, upper=0.99)
+      image = tf.image.random_hue(image, max_delta=0.04)
     elif color_ordering == 2:
-      image = tf.image.random_contrast(image, lower=1.0, upper=1.5)
-      image = tf.image.random_hue(image, max_delta=0.1)
+      #image = tf.image.random_contrast(image, lower=0.9, upper=0.99)
+      image = tf.image.random_hue(image, max_delta=0.04)
       image = tf.image.random_brightness(image, max_delta=0.1)
-      image = tf.image.random_saturation(image, lower=1, upper=1.3)
+      image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
     elif color_ordering == 3:
-      image = tf.image.random_hue(image, max_delta=0.1)
-      image = tf.image.random_saturation(image, lower=1.0, upper=1.3)
-      image = tf.image.random_contrast(image, lower=1.0, upper=1.5)
+      image = tf.image.random_hue(image, max_delta=0.04)
+      image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
+      #image = tf.image.random_contrast(image, lower=0.9, upper=0.99)
       image = tf.image.random_brightness(image, max_delta=0.1)
     else:
       raise ValueError('color_ordering must be in [0, 3]')
 
-    # The random_* ops do not necessarily clamp.
-    return tf.clip_by_value(image, 0.0, 255)
-
+  return image
+  
 #####################################################################################
 def process_image_and_label(image, label, weight, source_size, target_size, 
   ground_truth_size, mean_image, variance_image):
