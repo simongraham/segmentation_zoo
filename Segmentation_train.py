@@ -165,18 +165,6 @@ def train():
         softmaxs_train = Segmentation_networks.segnet(images_train,keep_prob, is_training)
         scope.reuse_variables()
         softmaxs_val = Segmentation_networks.segnet(images_val,keep_prob, is_training)
-      elif FLAGS.model_name == 'deeplab_v2':
-        softmaxs_train = Segmentation_networks.deeplab_v2(images_train,keep_prob)
-        scope.reuse_variables()
-        softmaxs_val = Segmentation_networks.deeplab_v2(images_val,keep_prob)
-      elif FLAGS.model_name == 'psp50':
-        softmaxs_train = Segmentation_networks.psp50(images_train,keep_prob, is_training)
-        scope.reuse_variables()
-        softmaxs_val = Segmentation_networks.psp50(images_val,keep_prob, is_training)
-      elif FLAGS.model_name == 'proposed_single':
-        softmaxs_train, aux_softmax1_train= Segmentation_networks.proposed_single(images_train,keep_prob, is_training)
-        scope.reuse_variables()
-        softmaxs_val, aux_softmax1_val = Segmentation_networks.proposed_single(images_val,keep_prob, is_training)
       else:
         raise ValueError('Network architecture not recognised')
     
@@ -187,9 +175,6 @@ def train():
     elif FLAGS.loss_function == 'cross_entropy':
       loss_train = layers.cross_entropy(softmaxs_train, labels_train)
       loss_val = layers.cross_entropy(softmaxs_val, labels_val)
-    elif FLAGS.loss_function == 'weighted_cross_entropy_aux':
-      loss_train = layers.weighted_cross_entropy_aux(softmaxs_train, aux_softmax1_train, labels_train, weights_train, discount_weight)
-      loss_val = layers.weighted_cross_entropy_aux(softmaxs_val, aux_softmax1_val, labels_val, weights_val, discount_weight)
     else:
       raise ValueError('Loss function not recognised')
 
@@ -221,9 +206,6 @@ def train():
     learning_rate = configure_learning_rate(num_examples_per_epoch_for_train, global_step)
     optimizer = configure_optimizer(learning_rate)
     grads_and_vars = optimizer.compute_gradients(loss_train)
-    if FLAGS.l2_reg == True:
-      vars = tf.trainable_variables()
-      avg_cross_entropy_log_loss = tf.add_n([tf.nn.l2_loss(v) for v in vars if 'bias' not in v.name])
 
     extra_update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
     train_op = optimizer.apply_gradients(grads_and_vars, global_step=global_step)
@@ -280,8 +262,8 @@ def train():
         # Training loop
         for step in xrange(nTrainBatches):
           start_time = time.time()
-          _, __, loss_value_train, acc_value_train, predict_value_train, actual_value_train, it, lt = \
-                  sess.run([train_op, extra_update_ops, loss_train, accuracy_train, predict_train, actual_train, images_train, labels_train],
+          _, __, loss_value_train, acc_value_train, predict_value_train, actual_value_train= \
+                  sess.run([train_op, extra_update_ops, loss_train, accuracy_train, predict_train, actual_train],
                   feed_dict = {keep_prob:FLAGS.keep_prob, is_training:True}) 
 
           duration = time.time() - start_time
@@ -338,8 +320,9 @@ def train():
 
         #Save the model after each epoch.
         sess.run(update_curr_epoch)
-        if (epoch+1) % 5 == 0:
-          sess.run(update_discount_weight)
+        if FLAGS.discount_weight is True:
+          if (epoch+1) % 5 == 0:
+            sess.run(update_discount_weight)
         
         checkpoint_path = os.path.join(FLAGS.checkpoint_dir, 'model.ckpt')
         saver.save(sess, checkpoint_path, global_step=global_step)

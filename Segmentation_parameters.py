@@ -10,14 +10,14 @@ import os
 
 FLAGS = tf.app.flags.FLAGS
 
-data_root = '/home/simon/Desktop/Seg_library/CRAG_data/'
+data_root = '/home/simon/Desktop/Seg_library/dataset/'
 model_name = 'segnet'
 # choose from unet, fcn8, fcn16, fcn32, segnet, deeplabv3
 loss_function = 'cross_entropy'
 # choose from cross_entropy, weighted_cross_entropy
 activation = 'relu'
 # choose from relu, elu, softmax
-exp_id = 'CRAG_1'
+exp_id = '1'
 
 ######################
 # Training data      #
@@ -25,9 +25,9 @@ exp_id = 'CRAG_1'
 
 tf.app.flags.DEFINE_string('train_dir', data_root + 'train','Directory where training patches are saved.')
 tf.app.flags.DEFINE_string('val_dir', data_root + 'valid', 'Directory where validation patches are saved.')
-tf.app.flags.DEFINE_integer('train_image_source_size', 500, 'Train image size')
-tf.app.flags.DEFINE_integer('train_image_target_size', 448, 'Train image size')
-tf.app.flags.DEFINE_integer('ground_truth_size', 448, 'Train image size- 416 for fcn; 228 for unet')
+tf.app.flags.DEFINE_integer('train_image_source_size', 200, 'Train image size')
+tf.app.flags.DEFINE_integer('train_image_target_size', 120, 'Train image size')
+tf.app.flags.DEFINE_integer('ground_truth_size', 120, 'Train image size- 416 for fcn; 228 for unet')
 tf.app.flags.DEFINE_integer('n_channels', 3, 'Number of channels in input image')
 tf.app.flags.DEFINE_integer('n_classes', 2,'number of classes at output')
 tf.app.flags.DEFINE_boolean('random_rotation', True, 'Random rotation of 90,180, or 270')
@@ -88,11 +88,12 @@ tf.app.flags.DEFINE_float('num_epochs_per_decay', 2.0,'Number of epochs after wh
 tf.app.flags.DEFINE_bool('sync_replicas', False,'Whether or not to synchronize the replicas during training.')
 tf.app.flags.DEFINE_integer('replicas_to_aggregate', 1,'The Number of gradients to collect before updating params.')
 tf.app.flags.DEFINE_float('moving_average_decay', None,'The decay to use for the moving average.''If left as None, then moving averages are not used.')
+tf.app.flags.DEFINE_bool('discount_weight', True, 'Whether to apply discount weights to auxiliary classifier.')
 
 ######################
 # Network testing    #
 ######################
 
-tf.app.flags.DEFINE_string('test_dir', os.path.join('CRAG_data/test/Images'), 'Directory where test images are saved')
+tf.app.flags.DEFINE_string('test_dir', data_root + 'test', 'Directory where test images are saved')
 tf.app.flags.DEFINE_string('result_dir', os.path.join('Results/Results'+'_'+model_name+'_'+exp_id), 'Directory where test output images are saved')
 tf.app.flags.DEFINE_string('target_image_path', os.path.join('target.png'), 'Path for target image for stain normalization')

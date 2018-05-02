@@ -218,12 +218,6 @@ def testing(model_path, path_id, filename_list):
 				logits_test = Segmentation_networks.fast_fcn(images_test,keep_prob)
 			elif FLAGS.model_name == 'segnet':
 				logits_test = Segmentation_networks.segnet(images_test, keep_prob, is_training)
-			elif FLAGS.model_name == 'deeplab_v2':
-				logits_test = Segmentation_networks.deeplab_v2(images_test,keep_prob)
-			elif FLAGS.model_name == 'proposed':
-				logits_test, _, __ = Segmentation_networks.proposed(images_test, keep_prob, is_training)
-			elif FLAGS.model_name == 'proposed_sep':
-				logits_test, _ = Segmentation_networks.proposed_sep(images_test, keep_prob, is_training)
 			else:
 				raise ValueError('Network architecture not recognised')
 

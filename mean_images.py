@@ -26,12 +26,10 @@ def crop_and_write():
 		crop2 = (source_size-crop1)-1
 
 	train_ims = glob.glob(FLAGS.train_dir + '/Images/*')
-	valid_ims = glob.glob(FLAGS.val_dir + '/Images/*')
-	all_ims = train_ims + valid_ims
-	num_ims = len(all_ims)
+	num_ims = len(train_ims)
 
 	for i in range(num_ims):
-		im = all_ims[i]
+		im = train_ims[i]
 		basename = os.path.basename(im)
 		basename = basename.split('.')[0]
 		im = cv2.imread(im)
@@ -50,12 +48,10 @@ def write():
 		crop2 = (source_size-crop1)-1
 
 	train_ims = glob.glob(FLAGS.train_dir + '/Images/*')
-	valid_ims = glob.glob(FLAGS.val_dir + '/Images/*')
-	all_ims = train_ims + valid_ims
-	num_ims = len(all_ims)
+	train_ims = len(all_ims)
 
 	for i in range(num_ims):
-		im = all_ims[i]
+		im = train_ims[i]
 		basename = os.path.basename(im)
 		basename = basename.split('.')[0]
 		im = cv2.imread(im)
