@@ -234,7 +234,7 @@ def process_image_and_label(image, label, weight, source_size, target_size,
       weight = tf.cast(weight,tf.float32)
 
   # Randomly crop the image
-  if source_size > target_size:
+  if source_size >= target_size:
     slice_index = int((target_size-ground_truth_size)/2)
     if weight is not None:
       concat = tf.concat([image, label, weight], axis=2)
