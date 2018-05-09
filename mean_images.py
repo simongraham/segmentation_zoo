@@ -48,7 +48,7 @@ def write():
 		crop2 = (source_size-crop1)-1
 
 	train_ims = glob.glob(FLAGS.train_dir + '/Images/*')
-	train_ims = len(all_ims)
+	num_ims = len(all_ims)
 
 	for i in range(num_ims):
 		im = train_ims[i]
@@ -56,4 +56,4 @@ def write():
 		basename = basename.split('.')[0]
 		im = cv2.imread(im)
 		im = im[crop1:crop2,crop1:crop2,:]
-		cv2.imwrite(os.path.join(FLAGS.stats_dir,'mean_calc','Images_')+basename+'.png', im)
+		cv2.imwrite(os.path.join(FLAGS.stats_dir,'mean_calc','Images/')+basename+'.png', im)
