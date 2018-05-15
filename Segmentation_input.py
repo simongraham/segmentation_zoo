@@ -192,31 +192,37 @@ def distort_color(image, color_ordering=0, scope=None):
   Raises:
     ValueError: if color_ordering not in [0, 3]
   """
+  image = image/255
+
   with tf.name_scope(scope, 'distort_color', [image]):
     if color_ordering == 0:
       image = tf.image.random_brightness(image, max_delta=0.1)
       image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
       image = tf.image.random_hue(image, max_delta=0.04)
-      #image = tf.image.random_contrast(image, lower=0.9, upper=0.99)
+      image = tf.image.random_contrast(image, lower=0.75, upper=1.25)
     elif color_ordering == 1:
-      image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
+      image = tf.image.random_saturation(image, lower=0.8, upper=1.2)
       image = tf.image.random_brightness(image, max_delta=0.1)
-      #image = tf.image.random_contrast(image, lower=0.9, upper=0.99)
+      image = tf.image.random_contrast(image, lower=0.75, upper=1.25)
       image = tf.image.random_hue(image, max_delta=0.04)
     elif color_ordering == 2:
-      #image = tf.image.random_contrast(image, lower=0.9, upper=0.99)
+      image = tf.image.random_contrast(image, lower=0.75, upper=1.25)
       image = tf.image.random_hue(image, max_delta=0.04)
       image = tf.image.random_brightness(image, max_delta=0.1)
       image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
     elif color_ordering == 3:
       image = tf.image.random_hue(image, max_delta=0.04)
-      image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
-      #image = tf.image.random_contrast(image, lower=0.9, upper=0.99)
+      image = tf.image.random_saturation(image, lower=0.8, upper=1.2)
+      image = tf.image.random_contrast(image, lower=0.75, upper=1.25)
       image = tf.image.random_brightness(image, max_delta=0.1)
     else:
       raise ValueError('color_ordering must be in [0, 3]')
 
-  return image
+    # The random_* ops do not necessarily clamp.
+    image = tf.clip_by_value(image, 0.0, 1.0)
+    image = image*255
+
+    return image
   
 #####################################################################################
 def process_image_and_label(image, label, weight, source_size, target_size, 
@@ -287,6 +293,37 @@ def process_image_and_label(image, label, weight, source_size, target_size,
       label = tf.image.flip_up_down(label)
       if weight is not None:
         weight = tf.image.flip_up_down(weight)
+    tf.summary.image('flipped_image', tf.expand_dims(image, 0))
+
+  # Randomly flip the image horizontally and vertically.
+  	random_var = tf.random_uniform(maxval=2, dtype=tf.int32, shape=[])
+  	image= control_flow_ops.cond(pred=tf.equal(random_var, 0),
+  		fn1=lambda: tf.image.flip_left_right(image),
+  		fn2=lambda: image)
+  	label = control_flow_ops.cond(pred=tf.equal(random_var, 0),
+  		fn1=lambda: tf.image.flip_left_right(label),
+  		fn2=lambda: label)
+  	if weight is not None:
+  		weight = control_flow_ops.cond(pred=tf.equal(random_var, 0),
+  			fn1=lambda: tf.image.flip_left_right(weight),
+  			fn2=lambda: weight)
+
+  	random_var2 = tf.random_uniform(maxval=2, dtype=tf.int32, shape=[])
+  	image= control_flow_ops.cond(pred=tf.equal(random_var2, 0),
+  		fn1=lambda: tf.image.flip_up_down(image),
+  		fn2=lambda: image)
+  	label = control_flow_ops.cond(pred=tf.equal(random_var2, 0),
+  		fn1=lambda: tf.image.flip_up_down(label),
+  		fn2=lambda: label)
+  	if weight is not None:
+  		weight = control_flow_ops.cond(pred=tf.equal(random_var2, 0),
+  			fn1=lambda: tf.image.flip_up_down(weight),
+  			fn2=lambda: weight)
+
+  	image.set_shape([target_size, target_size, 3])
+  	label.set_shape([ground_truth_size, ground_truth_size, 2])
+  	contour.set_shape([ground_truth_size, ground_truth_size, 2])
+      
     tf.summary.image('flipped_image', tf.expand_dims(image, 0))
 
   if FLAGS.color_distortion:
