@@ -10,9 +10,9 @@ import os
 
 FLAGS = tf.app.flags.FLAGS
 
-data_root = '/home/simon/Desktop/Seg_library/dataset/'
+data_root = # Path to the data directory
 model_name = 'segnet'
-# choose from unet, fcn8, fcn16, fcn32, segnet, deeplabv3
+# choose from unet, fcn8, fcn16, fcn32, segnet
 loss_function = 'cross_entropy'
 # choose from cross_entropy, weighted_cross_entropy
 activation = 'relu'
@@ -27,12 +27,12 @@ tf.app.flags.DEFINE_string('train_dir', data_root + 'train','Directory where tra
 tf.app.flags.DEFINE_string('val_dir', data_root + 'valid', 'Directory where validation patches are saved.')
 tf.app.flags.DEFINE_integer('train_image_source_size', 200, 'Train image size')
 tf.app.flags.DEFINE_integer('train_image_target_size', 120, 'Train image size')
-tf.app.flags.DEFINE_integer('ground_truth_size', 120, 'Train image size- 416 for fcn; 228 for unet')
+tf.app.flags.DEFINE_integer('ground_truth_size', 120, 'Ground truth size (will be different for unet)')
 tf.app.flags.DEFINE_integer('n_channels', 3, 'Number of channels in input image')
 tf.app.flags.DEFINE_integer('n_classes', 2,'number of classes at output')
 tf.app.flags.DEFINE_boolean('random_rotation', True, 'Random rotation of 90,180, or 270')
 tf.app.flags.DEFINE_boolean('random_flipping', True, 'Random horizontal and vertical flipping')
-tf.app.flags.DEFINE_boolean('color_distortion', False, 'Random color distorsion')
+tf.app.flags.DEFINE_boolean('color_distortion', True, 'Random color distorsion')
 tf.app.flags.DEFINE_boolean('zero_centre', True, 'Centre the dataset about the mean')
 tf.app.flags.DEFINE_boolean('normalize', True, 'divide dataset by the variance')
 tf.app.flags.DEFINE_string('image_ext', '.png', 'file extension')
