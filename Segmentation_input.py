@@ -281,7 +281,7 @@ def process_image_and_label(image, label, weight, source_size, target_size,
 
   if FLAGS.random_flipping:
   # Randomly flip the image horizontally and vertically.
-  	random_var = tf.random_uniform(maxval=2, dtype=tf.int32, shape=[])
+    random_var = tf.random_uniform(maxval=2, dtype=tf.int32, shape=[])
   	image= control_flow_ops.cond(pred=tf.equal(random_var, 0),
   		fn1=lambda: tf.image.flip_left_right(image),
   		fn2=lambda: image)
