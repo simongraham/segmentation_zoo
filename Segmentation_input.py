@@ -320,7 +320,7 @@ def process_image_and_label(image, label, weight, source_size, target_size,
   			fn1=lambda: tf.image.flip_up_down(weight),
   			fn2=lambda: weight)
 
-  	image.set_shape([target_size, target_size, 3])
+    image.set_shape([target_size, target_size, 3])
     label.set_shape([ground_truth_size, ground_truth_size, 2])
     if weight is not None:
   	 weight.set_shape([ground_truth_size, ground_truth_size, 1])
