@@ -280,35 +280,35 @@ def process_image_and_label(image, label, weight, source_size, target_size,
     tf.summary.image('rotated_image', tf.expand_dims(image, 0))
 
   if FLAGS.random_flipping:
-  # Randomly flip the image horizontally and vertically.
+    # Randomly flip the image horizontally and vertically.
     random_var = tf.random_uniform(maxval=2, dtype=tf.int32, shape=[])
-  	image= control_flow_ops.cond(pred=tf.equal(random_var, 0),
-  		fn1=lambda: tf.image.flip_left_right(image),
-  		fn2=lambda: image)
-  	label = control_flow_ops.cond(pred=tf.equal(random_var, 0),
-  		fn1=lambda: tf.image.flip_left_right(label),
-  		fn2=lambda: label)
-  	if weight is not None:
-  		weight = control_flow_ops.cond(pred=tf.equal(random_var, 0),
-  			fn1=lambda: tf.image.flip_left_right(weight),
-  			fn2=lambda: weight)
+    image= control_flow_ops.cond(pred=tf.equal(random_var, 0),
+      fn1=lambda: tf.image.flip_left_right(image),
+      fn2=lambda: image)
+    label = control_flow_ops.cond(pred=tf.equal(random_var, 0),
+      fn1=lambda: tf.image.flip_left_right(label),
+      fn2=lambda: label)
+    if weight is not None:
+      weight = control_flow_ops.cond(pred=tf.equal(random_var, 0),
+        fn1=lambda: tf.image.flip_left_right(weight),
+        fn2=lambda: weight)
 
-  	random_var2 = tf.random_uniform(maxval=2, dtype=tf.int32, shape=[])
-  	image= control_flow_ops.cond(pred=tf.equal(random_var2, 0),
-  		fn1=lambda: tf.image.flip_up_down(image),
-  		fn2=lambda: image)
-  	label = control_flow_ops.cond(pred=tf.equal(random_var2, 0),
-  		fn1=lambda: tf.image.flip_up_down(label),
-  		fn2=lambda: label)
-  	if weight is not None:
-  		weight = control_flow_ops.cond(pred=tf.equal(random_var2, 0),
-  			fn1=lambda: tf.image.flip_up_down(weight),
-  			fn2=lambda: weight)
+    random_var2 = tf.random_uniform(maxval=2, dtype=tf.int32, shape=[])
+    image= control_flow_ops.cond(pred=tf.equal(random_var2, 0),
+      fn1=lambda: tf.image.flip_up_down(image),
+      fn2=lambda: image)
+    label = control_flow_ops.cond(pred=tf.equal(random_var2, 0),
+      fn1=lambda: tf.image.flip_up_down(label),
+      fn2=lambda: label)
+    if weight is not None:
+      weight = control_flow_ops.cond(pred=tf.equal(random_var2, 0),
+        fn1=lambda: tf.image.flip_up_down(weight),
+        fn2=lambda: weight)
 
     image.set_shape([target_size, target_size, 3])
     label.set_shape([ground_truth_size, ground_truth_size, 2])
     if weight is not None:
-  	 weight.set_shape([ground_truth_size, ground_truth_size, 1])
+  	   weight.set_shape([ground_truth_size, ground_truth_size, 1])
       
     tf.summary.image('flipped_image', tf.expand_dims(image, 0))
 
