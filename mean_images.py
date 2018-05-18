@@ -48,7 +48,7 @@ def write():
 		crop2 = (source_size-crop1)-1
 
 	train_ims = glob.glob(FLAGS.train_dir + '/Images/*')
-	num_ims = len(all_ims)
+	num_ims = len(train_ims)
 
 	for i in range(num_ims):
 		im = train_ims[i]
