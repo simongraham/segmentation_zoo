@@ -280,21 +280,6 @@ def process_image_and_label(image, label, weight, source_size, target_size,
     tf.summary.image('rotated_image', tf.expand_dims(image, 0))
 
   if FLAGS.random_flipping:
-    # Randomly flip the image horizontally and vertically.
-    rand1 = np.random.randint(0,2)
-    rand2 = np.random.randint(0,2)
-    if rand1 == 1:
-      image = tf.image.flip_left_right(image)
-      label = tf.image.flip_left_right(label)
-      if weight is not None:
-        weight = tf.image.flip_left_right(weight)
-    if rand2 == 1:
-      image = tf.image.flip_up_down(image)
-      label = tf.image.flip_up_down(label)
-      if weight is not None:
-        weight = tf.image.flip_up_down(weight)
-    tf.summary.image('flipped_image', tf.expand_dims(image, 0))
-
   # Randomly flip the image horizontally and vertically.
   	random_var = tf.random_uniform(maxval=2, dtype=tf.int32, shape=[])
   	image= control_flow_ops.cond(pred=tf.equal(random_var, 0),
