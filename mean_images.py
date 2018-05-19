@@ -56,4 +56,4 @@ def write():
 		basename = basename.split('.')[0]
 		im = cv2.imread(im)
 		im = im[crop1:crop2,crop1:crop2,:]
-		cv2.imwrite(os.path.join(FLAGS.stats_dir,'mean_calc','Images/')+basename+'.png', im)
+		cv2.imwrite(os.path.join(FLAGS.stats_dir,'mean_calc','Images')+ '/' + basename+'.png', im)

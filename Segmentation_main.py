@@ -61,11 +61,11 @@ def main(argv):
     else:
       network_stats_file_path = os.path.join(FLAGS.stats_dir,'network_stats.mat')
       if not os.path.isfile(network_stats_file_path):
-        if not os.path.exists(os.path.join(FLAGS.stats_dir,'mean_calc','Images_')):
-          os.mkdir(os.path.join(FLAGS.stats_dir,'mean_calc','Images_'))
+        if not os.path.exists(os.path.join(FLAGS.stats_dir,'mean_calc','Images')):
+          os.mkdir(os.path.join(FLAGS.stats_dir,'mean_calc','Images'))
           print('Writing images for mean and variance calculation...')
           mean_images.write()
-        list_images = glob.glob(os.path.join(FLAGS.stats_dir,'mean_calc','Images_', '*') + FLAGS.image_ext)
+        list_images = glob.glob(os.path.join(FLAGS.stats_dir,'mean_calc','Images', '*') + FLAGS.image_ext)
         print('Calculating mean and variance...')
         mean_image, variance_image = Segmentation_input.calculate_mean_variance_image(list_images)
         sio.savemat(network_stats_file_path,
