@@ -10,14 +10,15 @@ import os
 
 FLAGS = tf.app.flags.FLAGS
 
-data_root = # Path to the data directory
+test_root = '/home/simon/Desktop/segmentation_zoo/dataset/test_s/'
+data_root = '/home/simon/Desktop/nuclei_data/kumar/Kumar_NS/valid/'
 model_name = 'dcan'
 # choose from unet, fcn8, fcn16, fcn32, segnet
 loss_function = 'cross_entropy_dcan'
 # choose from cross_entropy, weighted_cross_entropy
 activation = 'relu'
 # choose from relu, elu, softmax
-exp_id = '1'
+exp_id = 'no_sn'
 
 ######################
 # Training data      #
@@ -94,6 +95,6 @@ tf.app.flags.DEFINE_bool('discount_weight', True, 'Whether to apply discount wei
 # Network testing    #
 ######################
 
-tf.app.flags.DEFINE_string('test_dir', data_root + 'test', 'Directory where test images are saved')
+tf.app.flags.DEFINE_string('test_dir', test_root, 'Directory where test images are saved')
 tf.app.flags.DEFINE_string('result_dir', os.path.join('Results/Results'+'_'+model_name+'_'+exp_id), 'Directory where test output images are saved')
 tf.app.flags.DEFINE_string('target_image_path', os.path.join('target.png'), 'Path for target image for stain normalization')
