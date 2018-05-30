@@ -149,9 +149,9 @@ def train():
         softmax_val_contour2, softmax_val_contour3, softmax_val_fusion_contour) = Segmentation_networks.dcan(images_val,keep_prob)
     
     # Calculate loss.
-    loss_train = layers.loss_dcan(softmax_train_gland1, softmax_train_gland2, softmax_train_gland3, softmax_train_fusion_gland, softmax_train_contour1, 
+    loss_train = layers.cross_entropy_dcan(softmax_train_gland1, softmax_train_gland2, softmax_train_gland3, softmax_train_fusion_gland, softmax_train_contour1, 
       softmax_train_contour2, softmax_train_contour3, softmax_train_fusion_contour, labels_train, contours_train , discount_weight)
-    loss_val = layers.loss_dcan(softmax_val_gland1, softmax_val_gland2, softmax_val_gland3, softmax_val_fusion_gland, softmax_val_contour1, 
+    loss_val = layers.cross_entropy_dcan(softmax_val_gland1, softmax_val_gland2, softmax_val_gland3, softmax_val_fusion_gland, softmax_val_contour1, 
       softmax_val_contour2, softmax_val_contour3, softmax_val_fusion_contour, labels_val, contours_val , discount_weight)
 
     # Accuracy for each class- gland

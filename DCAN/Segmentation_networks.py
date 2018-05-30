@@ -61,7 +61,7 @@ def dcan(images, keep_prob):
   with tf.variable_scope('fullyConnected') as scope:
     fc1 = layers.conv2D_dilated(pool6, 512, 1024, rate=4)
     drop1 = tf.nn.dropout(fc1, keep_prob)
-    fc2 = layers.conv2D(drop1, 1024, 1024, (1,1), name_ext='_2')
+    fc2 = layers.conv2D(drop1, 1024, 1024, kernel_size = (1,1), name_ext='_2')
     drop2 = tf.nn.dropout(fc2, keep_prob)
 
   with tf.variable_scope('output') as scope:
