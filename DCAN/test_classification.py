@@ -22,7 +22,7 @@ import tensorflow as tf
 import scipy.misc
 import math
 
-import stain_norm
+#import stain_norm
 import Segmentation_networks
 import Segmentation_input
 import mirror
