@@ -10,15 +10,15 @@ import os
 
 FLAGS = tf.app.flags.FLAGS
 
-test_root = '/home/simon/Desktop/segmentation_zoo/dataset/test_s/'
-data_root = '/home/simon/Desktop/nuclei_data/kumar/Kumar_NS/valid/'
+test_root = '/home/simon/Desktop/segmentation_zoo/dataset/test_diff/Images/'
+data_root = '/home/simon/Desktop/segmentation_zoo/dataset_sn/valid/'
 model_name = 'dcan'
 # choose from unet, fcn8, fcn16, fcn32, segnet
 loss_function = 'cross_entropy_dcan'
 # choose from cross_entropy, weighted_cross_entropy
 activation = 'relu'
 # choose from relu, elu, softmax
-exp_id = 'no_sn'
+exp_id = '1'
 
 ######################
 # Training data      #

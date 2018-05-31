@@ -378,7 +378,7 @@ def train():
 def find_optim_net():
   print('Find an optimal network from validation accuracy')
   mat_contents = sio.loadmat(os.path.join(FLAGS.stats_dir, 'variables.mat'))
-  all_avgValidationAcc = mat_contents['all_avgValidationAcc']
+  all_avgValidationAcc = mat_contents['all_avgValidationAcc_g']
 
   x = np.arange(all_avgValidationAcc.shape[1])
   y = np.reshape(np.log(all_avgValidationAcc), -1)

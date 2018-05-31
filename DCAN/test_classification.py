@@ -62,10 +62,10 @@ def extract_patches(filename, patch_size , stride):
 	# switch bgr to rgb
 	image = np.dstack((image[:,:,2],image[:,:,1],image[:,:,0]))
 
-	target = FLAGS.target_image_path
-	target = cv.imread(target)
-	b, g, r = cv.split(target)  # get b,g,r
-	target = cv.merge([r, g, b])
+	#target = FLAGS.target_image_path
+	#target = cv.imread(target)
+	#b, g, r = cv.split(target)  # get b,g,r
+	#target = cv.merge([r, g, b])
 
 	# pad array
 	# centreIndexRow = int((size_input_patch[0] - size_input_patch[0])/2)
@@ -88,7 +88,7 @@ def extract_patches(filename, patch_size , stride):
 		for index2, col in enumerate(colRange): 
 
 			patch1 = image[row:row+FLAGS.train_image_target_size,col:col+FLAGS.train_image_target_size,:]
-			patch1 = stain_norm.norm_rn(patch1, target)
+			#patch1 = stain_norm.norm_rn(patch1, target)
 			patches[(index1*len(colRange))+index2,:,:] = patch1
 
 	return patches, image.shape, original_shape
