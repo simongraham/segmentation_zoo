@@ -82,7 +82,6 @@ def main(argv):
     # Testing
   elif argv[0] == 'test':
     #model_path = Segmentation_train.find_optim_net()
-
     model_path = FLAGS.checkpoint_dir + '/model.ckpt-172198'
     path_id = os.path.basename(model_path)
     path_id = path_id.split('-')[1]
