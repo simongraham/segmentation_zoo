@@ -433,6 +433,16 @@ def cross_entropy_dcan(softmax_gland1, softmax_gland2, softmax_gland3, softmax_g
     w = discount_weight
     w = tf.cast(w, tf.float32)
 
+    weights1 = tf.slice(labels_contour,[0,0,0,0],[FLAGS.train_batch_size,FLAGS.train_image_target_size,FLAGS.train_image_target_size,1])
+    weights2 = tf.slice(labels_contour,[0,0,0,1],[FLAGS.train_batch_size,FLAGS.train_image_target_size,FLAGS.train_image_target_size,1])
+    value1 = tf.constant(2.0)
+    value2 = tf.constant(1.0)
+    value1 = tf.cast(value1, tf.float32)
+    value2 = tf.cast(value2, tf.float32)
+    weights1 = tf.scalar_mul(value1, weights1)
+    weights2 = tf.scalar_mul(value2, weights2)
+    weights = tf.add(weights1, weights2)
+
     truncated_softmax_gland1 = tf.clip_by_value(softmax_gland1, epsilon, 1.0 - epsilon)
     truncated_softmax_gland2 = tf.clip_by_value(softmax_gland2, epsilon, 1.0 - epsilon)
     truncated_softmax_gland3 = tf.clip_by_value(softmax_gland3, epsilon, 1.0 - epsilon)
@@ -447,9 +457,13 @@ def cross_entropy_dcan(softmax_gland1, softmax_gland2, softmax_gland3, softmax_g
     cross_entropy_log_loss_g3 = -tf.reduce_sum(labels_gland * tf.log(truncated_softmax_gland3), reduction_indices=[3],keep_dims=True)
     cross_entropy_log_loss_gf = -tf.reduce_sum(labels_gland * tf.log(truncated_softmax_glandf), reduction_indices=[3],keep_dims=True)
     cross_entropy_log_loss_c1 = -tf.reduce_sum(labels_contour * tf.log(truncated_softmax_contour1), reduction_indices=[3],keep_dims=True)
+    cross_entropy_log_loss_c1 = tf.multiply(weights, cross_entropy_log_loss_c1)
     cross_entropy_log_loss_c2 = -tf.reduce_sum(labels_contour * tf.log(truncated_softmax_contour2), reduction_indices=[3],keep_dims=True)
+    cross_entropy_log_loss_c2 = tf.multiply(weights, cross_entropy_log_loss_c2)
     cross_entropy_log_loss_c3 = -tf.reduce_sum(labels_contour * tf.log(truncated_softmax_contour3), reduction_indices=[3],keep_dims=True)
+    cross_entropy_log_loss_c3 = tf.multiply(weights, cross_entropy_log_loss_c3)
     cross_entropy_log_loss_cf = -tf.reduce_sum(labels_contour * tf.log(truncated_softmax_contourf), reduction_indices=[3],keep_dims=True)
+    cross_entropy_log_loss_cf = tf.multiply(weights, cross_entropy_log_loss_cf)
 
     avg_cross_entropy_log_loss_g1 = tf.scalar_mul(w,tf.reduce_sum(cross_entropy_log_loss_g1,reduction_indices=[0,1,2,3]))
     avg_cross_entropy_log_loss_g2 = tf.scalar_mul(w,tf.reduce_sum(cross_entropy_log_loss_g2,reduction_indices=[0,1,2,3]))
