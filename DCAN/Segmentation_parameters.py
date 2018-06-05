@@ -18,7 +18,7 @@ loss_function = 'cross_entropy_dcan'
 # choose from cross_entropy, weighted_cross_entropy
 activation = 'relu'
 # choose from relu, elu, softmax
-exp_id = '1'
+exp_id = 'sn_2'
 
 ######################
 # Training data      #
@@ -50,8 +50,8 @@ tf.app.flags.DEFINE_string('checkpoint_dir', os.path.join('checkpoints/checkpoin
 tf.app.flags.DEFINE_string('log_dir', os.path.join('logs/logs'+'_'+model_name+'_'+exp_id), 'Directory where log files are saved.')
 tf.app.flags.DEFINE_string('stats_dir', os.path.join('stats/stats'+'_'+model_name+'_'+exp_id), 'Directory where stats files are saved.')
 tf.app.flags.DEFINE_integer('num_epochs', 50, 'Number of epochs to run.')
-tf.app.flags.DEFINE_integer('train_batch_size',16 , 'Number of samples in a training batch.') 
-tf.app.flags.DEFINE_integer('eval_batch_size', 16, 'Number of samples in an evaluation batch.') 
+tf.app.flags.DEFINE_integer('train_batch_size', 12, 'Number of samples in a training batch.') 
+tf.app.flags.DEFINE_integer('eval_batch_size', 12, 'Number of samples in an evaluation batch.') 
 tf.app.flags.DEFINE_float('min_fraction_of_examples_in_queue', 0.4, 'fraction of examples pre-read in queue')
 tf.app.flags.DEFINE_integer('num_cores',8, 'number of cpu cores')
 
